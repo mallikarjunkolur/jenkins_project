@@ -1,0 +1,3 @@
+[submodule "Amazon"]
+	path = Amazon
+	url = git@github.com:mallikarjunkolur/Amazon.git
