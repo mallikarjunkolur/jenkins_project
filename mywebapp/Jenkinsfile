@@ -1,0 +1,31 @@
+pipeline { 
+    agent any 
+    stages { 
+        stage('clone') { 
+            steps { 
+                git branch: 'master', url: 'https://github.com/mallikarjunkolur/Amazon.git' 
+            } 
+        } 
+        stage('clean') { 
+            steps { 
+                sh 'cd Amazon && mvn clean' 
+            } 
+        } 
+        stage('compile') { 
+            steps { 
+                sh 'cd Amazon && mvn compile' 
+            } 
+        } 
+        stage('test') { 
+            steps { 
+                sh 'cd Amazon && mvn test' 
+            } 
+        } 
+        stage('build') { 
+            steps { 
+                sh 'cd Amazon && mvn clean install' 
+            } 
+        } 
+    } 
+} 
+
