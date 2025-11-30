@@ -1,11 +1,6 @@
 pipeline { 
     agent any 
     stages { 
-        stage('clone') { 
-            steps { 
-                git branch: 'master', url: 'https://github.com/mallikarjunkolur/Amazon.git' 
-            } 
-        } 
         stage('clean') { 
             steps { 
                 sh 'cd Amazon && mvn clean' 
@@ -19,11 +14,6 @@ pipeline {
         stage('test') { 
             steps { 
                 sh 'cd Amazon && mvn test' 
-            } 
-        } 
-        stage('build') { 
-            steps { 
-                sh 'cd Amazon && mvn clean install' 
             } 
         } 
     } 
