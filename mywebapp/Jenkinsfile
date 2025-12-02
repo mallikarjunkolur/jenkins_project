@@ -3,17 +3,17 @@ pipeline {
     stages { 
         stage('clean') { 
             steps { 
-                sh 'cd Amazon && mvn clean' 
+                sh 'cd mywebapp && mvn clean' 
             } 
         } 
         stage('compile') { 
             steps { 
-                sh 'cd Amazon && mvn compile' 
+                sh 'cd mywebapp && mvn compile' 
             } 
         } 
         stage('test') { 
             steps { 
-                sh 'cd Amazon && mvn test' 
+                sh 'cd mywebapp && mvn test' 
             } 
         } 
     } 
