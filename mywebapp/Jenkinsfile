@@ -32,21 +32,21 @@ stage('Compile') {
         }
 	        stage('Unit Test') {
             steps {
-                sh "cd mywebapp && ${MAVEN_CMD} test"
+                sh "cd mywebapp && mvn test"
             }
         }
         stage('SonarQube Analysis') {
             steps {
                 script {
                     withSonarQubeEnv('demo_sonarqube_server') {
-                        sh "cd mywebapp && ${MAVEN_CMD} sonar:sonar"
+                        sh "cd mywebapp && mvn sonar:sonar"
                     }
                 }
             }
         }
         stage('Build WAR') {
             steps {
-                sh "cd mywebapp && ${MAVEN_CMD} package -DskipTests"
+                sh "cd mywebapp && mvn package -DskipTests"
             }
         }
         stage('Backup WAR') {
