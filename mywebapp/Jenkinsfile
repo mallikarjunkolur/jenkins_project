@@ -27,26 +27,26 @@ stages {
         }
 stage('Compile') {
             steps {
-                sh "${MAVEN_CMD} clean compile"
+                sh "cd mywebapp && ${MAVEN_CMD} clean compile"
             }
         }
 	        stage('Unit Test') {
             steps {
-                sh "${MAVEN_CMD} test"
+                sh "cd mywebapp && ${MAVEN_CMD} test"
             }
         }
         stage('SonarQube Analysis') {
             steps {
                 script {
                     withSonarQubeEnv('demo_sonarqube_server') {
-                        sh "${MAVEN_CMD} sonar:sonar"
+                        sh "cd mywebapp && ${MAVEN_CMD} sonar:sonar"
                     }
                 }
             }
         }
         stage('Build WAR') {
             steps {
-                sh "${MAVEN_CMD} package -DskipTests"
+                sh "cd mywebapp && ${MAVEN_CMD} package -DskipTests"
             }
         }
         stage('Backup WAR') {
