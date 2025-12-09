@@ -27,7 +27,7 @@ stages {
         }
 stage('Compile') {
             steps {
-                sh "cd mywebapp && ${MAVEN_CMD} clean compile"
+                sh "cd mywebapp && mvn clean compile"
             }
         }
 	        stage('Unit Test') {
