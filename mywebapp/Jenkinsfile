@@ -1,21 +1,101 @@
-pipeline { 
+pipeline {
     agent any
-    stages { 
-        stage('clean') { 
-            steps { 
-                sh 'cd mywebapp && mvn clean' 
-            } 
-        } 
-        stage('compile') { 
-            steps { 
-                sh 'cd mywebapp && mvn compile' 
-            } 
-        } 
-        stage('test') { 
-            steps { 
-                sh 'cd mywebapp && mvn test' 
-            } 
-        } 
-    } 
-} 
+
+    parameters {
+        choice(
+            name: 'DEPLOY_ENV',
+            choices: ['dev', 'qa', 'prod'],
+            description: 'Select environment for deployment'
+        )
+    }
+
+    environment {
+        MAVEN_CMD  = 'mvn'
+        BACKUP_DIR = '/opt/war-backup'
+        WAR_NAME   = 'mywebapp.war'
+
+        TOMCAT_DEV_URL  = 'http://192.168.18.129:8086'
+        TOMCAT_QA_URL   = 'http:// 192.168.18.129:8087'
+        TOMCAT_PROD_URL = 'http:// 192.168.18.129:8088'
+    }
+stages {
+               stage('Checkout') {
+            steps {
+                git branch: 'master',
+                    url: 'https://github.com/mallikarjunkolur/jenkins_project.git'
+            }
+        }
+stage('Compile') {
+            steps {
+                sh "${MAVEN_CMD} clean compile"
+            }
+        }
+	        stage('Unit Test') {
+            steps {
+                sh "${MAVEN_CMD} test"
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv('demo_sonarqube_server') {
+                        sh "${MAVEN_CMD} sonar:sonar"
+                    }
+                }
+            }
+        }
+        stage('Build WAR') {
+            steps {
+                sh "${MAVEN_CMD} package -DskipTests"
+            }
+        }
+        stage('Backup WAR') {
+            steps {
+                script {
+                    sh """
+                        mkdir -p ${BACKUP_DIR}/${params.DEPLOY_ENV}
+                        TS=\$(date +%Y%m%d%H%M%S)
+                        cp target/*.war ${BACKUP_DIR}/${params.DEPLOY_ENV}/${WAR_NAME%.war}_\$TS.war
+                    """
+                }
+            }
+        }
+        stage('Deploy to Tomcat') {
+            steps {
+                script {
+                    def url = ""
+                    def credId = ""
+
+                    if (params.DEPLOY_ENV == 'dev') {
+                        url    = TOMCAT_DEV_URL
+                        credId = 'tomcat_dev_creds'
+                    } else if (params.DEPLOY_ENV == 'qa') {
+                        url    = TOMCAT_QA_URL
+                        credId = 'tomcat_qa_creds'
+                    } else if (params.DEPLOY_ENV == 'prod') {
+                        url    = TOMCAT_PROD_URL
+                        credId = 'tomcat_prod_creds'
+                    }
+
+                    deploy adapters: [
+                        tomcat9(
+                            url: url,
+                            credentialsId: credId
+                        )
+                    ],
+                    contextPath: "/mywebapp",
+                    war: "target/${WAR_NAME}"
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo "Build and deployment to ${params.DEPLOY_ENV} completed successfully."
+        }
+        failure {
+            echo "Pipeline failed. Please check the logs."
+        }
+    }
+}
 
