@@ -55,7 +55,7 @@ stage('Compile') {
                     sh """
                         mkdir -p ${BACKUP_DIR}/${params.DEPLOY_ENV}
                         TS=\$(date +%Y%m%d%H%M%S)
-                        cp target/*.war ${BACKUP_DIR}/${params.DEPLOY_ENV}/${WAR_NAME%.war}_\$TS.war
+                        cp target/*.war ${BACKUP_DIR}/"${params.DEPLOY_ENV}/${WAR_NAME.replace('.war', '')}_$TS"
                     """
                 }
             }
