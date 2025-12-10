@@ -52,8 +52,8 @@ stage('Compile') {
             steps {
                 script {
                     sh """
-                        sudo mkdir -p ${BACKUP_DIR}/${params.DEPLOY_ENV}
-                        sudo cp target/*.war ${BACKUP_DIR}/"${params.DEPLOY_ENV}/${WAR_NAME.replace('.war', '')}_\$(date +%Y%m%d_%H%M%S).war"
+                        mkdir -p ${BACKUP_DIR}/${params.DEPLOY_ENV}
+                        cp target/*.war ${BACKUP_DIR}/"${params.DEPLOY_ENV}/${WAR_NAME.replace('.war', '')}_\$(date +%Y%m%d_%H%M%S).war"
                     """
                 }
             }
