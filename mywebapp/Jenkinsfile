@@ -53,7 +53,7 @@ stage('Compile') {
                 script {
                     sh """
                         mkdir -p ${BACKUP_DIR}/${params.DEPLOY_ENV}
-                        cp target/*.war ${BACKUP_DIR}/"${params.DEPLOY_ENV}/${WAR_NAME.replace('.war', '')}_$TS"
+                        cp target/*.war ${BACKUP_DIR}/"${params.DEPLOY_ENV}/${WAR_NAME.replace('.war', '')}_$(date)"
                     """
                 }
             }
