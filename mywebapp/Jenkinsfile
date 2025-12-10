@@ -10,7 +10,7 @@ pipeline {
     }
 
     environment {
-        BACKUP_DIR = '/opt/war-backup'
+        BACKUP_DIR = '/home/mgk/linux/jenkins_project/war_backup'
         WAR_NAME   = 'mywebapp.war'
 
         TOMCAT_DEV_URL  = 'http://192.168.18.129:8086'
