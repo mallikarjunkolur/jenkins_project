@@ -38,7 +38,7 @@ stage('Compile') {
             steps {
                 script {
                     withSonarQubeEnv('demo_SonarQube_server') {
-                        sh "cd mywebapp && mvn sonar:sonar -Dsonar.host.url=http://192.168.18.129:9000"
+                        sh "cd mywebapp && mvn sonar:sonar"
                     }
                 }
             }
