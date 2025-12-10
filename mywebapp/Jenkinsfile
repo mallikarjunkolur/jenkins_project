@@ -13,9 +13,9 @@ pipeline {
         BACKUP_DIR = '/home/mgk/linux/jenkins_project/war_backup'
         WAR_NAME   = 'mywebapp.war'
 
-        TOMCAT_DEV_URL  = 'http://192.168.18.129:8086'
-        TOMCAT_QA_URL   = 'http:// 192.168.18.129:8087'
-        TOMCAT_PROD_URL = 'http:// 192.168.18.129:8088'
+        TOMCAT_DEV_URL  = 'http://192.168.31.3:8086/'
+        TOMCAT_QA_URL   = 'http://192.168.31.3:8087/'
+        TOMCAT_PROD_URL = 'http://192.168.31.3:8088/'
     }
 stages {
                stage('Checkout') {
