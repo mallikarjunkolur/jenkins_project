@@ -10,7 +10,6 @@ pipeline {
     }
 
     environment {
-        MAVEN_CMD  = 'mvn'
         BACKUP_DIR = '/opt/war-backup'
         WAR_NAME   = 'mywebapp.war'
 
@@ -38,7 +37,7 @@ stage('Compile') {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('demo_sonarqube_server') {
+                    withSonarQubeEnv('demo_SonarQube_server') {
                         sh "cd mywebapp && mvn sonar:sonar"
                     }
                 }
