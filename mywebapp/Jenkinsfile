@@ -82,7 +82,7 @@ stage('Compile') {
                         )
                     ],
                     contextPath: "/mywebapp",
-                    war: "target/${WAR_NAME}"
+                    war: "mywebapp/target/${WAR_NAME}"
                 }
             }
         }
